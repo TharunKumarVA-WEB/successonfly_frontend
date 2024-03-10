@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
-import SignIn from './components/SignIn'; 
-import SignUp from './components/SignUp';
-import BookingForm from './components/BookingForm';
+import SignIn from './components/signIn'; 
+import SignUp from './components/signup';
+import BookingForm from './components/Bookingform';
 import Footer from './components/Footer';
 
 function App() {
