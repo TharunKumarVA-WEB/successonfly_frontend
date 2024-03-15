@@ -83,7 +83,7 @@ function BookingForm() {
     };
 
     try {
-      const response = await fetch("http://localhost:3000/api/check-flights", {
+      const response = await fetch("https://successonfly-backend-1.onrender.com/api/check-flights", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

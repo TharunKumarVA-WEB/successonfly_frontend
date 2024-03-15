@@ -11,7 +11,7 @@ function BookingForm() {
 
     // Assuming you make a request to fetch available flights
     try {
-      const response = await axios.get('http://localhost:3000/api/available-flights');
+      const response = await axios.get('https://successonfly-backend-1.onrender.com/api/available-flights');
       setAvailableFlights(response.data.availableFlights);
       setSearched(true); // Set searched to true after fetching flights
     } catch (error) {
