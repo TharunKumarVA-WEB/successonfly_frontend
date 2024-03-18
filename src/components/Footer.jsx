@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Footer() {
   return (
-    <footer className="bg-dark text-light py-1 mt-2 position-fixed bottom-0 w-100">
+    <footer className="bg-dark text-light py-1 mt-2  w-100">
       <div className="container mt-2 ">
         <div className="row">
           <div className="col">

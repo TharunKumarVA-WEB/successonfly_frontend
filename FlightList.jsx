@@ -9,7 +9,7 @@ function BookingForm() {
     e.preventDefault();
     // Your form submission logic here
 
-    // Assuming you make a request to fetch available flights
+    // Assuming you make a request to fetch available fligh
     try {
       const response = await axios.get('https://successonfly-backend-1.onrender.com/api/available-flights');
       setAvailableFlights(response.data.availableFlights);

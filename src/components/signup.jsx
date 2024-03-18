@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import loadingGif from '../assets/Loading.gif';
 
 function RegistrationForm() {
   const [registerFormData, setRegisterFormData] = useState({
@@ -11,8 +12,9 @@ function RegistrationForm() {
 
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  
-  const navigate = useNavigate(); // Get the navigate function from react-router-dom
+  const [successMessage, setSuccessMessage] = useState('');
+
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -37,14 +39,12 @@ function RegistrationForm() {
       const data = await response.json();
 
       if (response.status === 200 || response.status === 201) {
-        console.log('User created successfully.');
-        console.log(data);
+        setSuccessMessage('Registration successful.');
         setRegisterFormData({ username: '', name: '', password: '' });
-
-        // Redirect to the sign-in page after successful registration
-        navigate('/signin'); // Assuming your sign-in route is '/signin'
+        navigate('/signin');
+      } else if (response.status === 409) {
+        setErrorMessage('User already exists. Please sign in.');
       } else {
-        console.log('Error creating user:', data.error || 'Unknown error');
         setErrorMessage(data.error || 'An error occurred during registration.');
       }
     } catch (error) {
@@ -57,56 +57,64 @@ function RegistrationForm() {
 
   return (
     <div className="container mt-5">
-      <div className="col-md-6 offset-md-3">
-        <h2 className="text-center mb-4">Register</h2>
-        <form onSubmit={handleRegister}>
-          <div className="mb-3">
-            <label htmlFor="email" className="form-label">Email:</label>
-            <input
-              type="email"
-              className="form-control"
-              id="email"
-              placeholder="Please write your email..."
-              value={registerFormData.username}
-              onChange={(e) => setRegisterFormData({ ...registerFormData, username: e.target.value })}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="name" className="form-label">Full Name:</label>
-            <input
-              type="text"
-              className="form-control"
-              id="name"
-              placeholder="Full name"
-              value={registerFormData.name}
-              onChange={(e) => setRegisterFormData({ ...registerFormData, name: e.target.value })}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="password" className="form-label">Password:</label>
-            <input
-              type="password"
-              className="form-control"
-              id="password"
-              placeholder="Password please.."
-              value={registerFormData.password}
-              onChange={(e) => setRegisterFormData({ ...registerFormData, password: e.target.value })}
-              required
-            />
-          </div>
-          <button type="submit" className="btn btn-primary" disabled={loading}>
-            {loading ? 'Registering...' : 'Register'}
-          </button>
-        </form>
-        {errorMessage && <p className="text-danger mt-3">{errorMessage}</p>}
+      <div className="row">
+        <div className="col-md-6 offset-md-3">
+          <h2 className="text-center mb-4">Register</h2>
+          <form onSubmit={handleRegister}>
+            <div className="mb-3">
+              <label htmlFor="email" className="form-label">Email:</label>
+              <input
+                type="email"
+                className="form-control"
+                id="email"
+                placeholder="Please write your email..."
+                value={registerFormData.username}
+                onChange={(e) => setRegisterFormData({ ...registerFormData, username: e.target.value })}
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="name" className="form-label">Full Name:</label>
+              <input
+                type="text"
+                className="form-control"
+                id="name"
+                placeholder="Full name"
+                value={registerFormData.name}
+                onChange={(e) => setRegisterFormData({ ...registerFormData, name: e.target.value })}
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="password" className="form-label">Password:</label>
+              <input
+                type="password"
+                className="form-control"
+                id="password"
+                placeholder="Password please.."
+                value={registerFormData.password}
+                onChange={(e) => setRegisterFormData({ ...registerFormData, password: e.target.value })}
+                required
+              />
+            </div>
+            <button type="submit" className="btn btn-primary" disabled={loading}>
+              {loading ? 'Registering...' : 'Register'}
+            </button>
+          </form>
+          {/* Loading indicator */}
+          {loading && (
+            <div className="d-flex justify-content-center align-items-center mt-3">
+              <img src={loadingGif} alt="Loading" className="loading-gif" />
+            </div>
+          )}
+          {/* Success message */}
+          {successMessage && <p className="text-success mt-3">{successMessage}</p>}
+          {/* Error message */}
+          {errorMessage && <p className="text-danger mt-3">{errorMessage}</p>}
+        </div>
       </div>
     </div>
   );
 }
 
 export default RegistrationForm;
-
-
-

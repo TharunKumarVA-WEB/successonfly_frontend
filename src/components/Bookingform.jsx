@@ -1,9 +1,9 @@
 
-
 // BookingForm.js
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import AvailableFlights from "./AvailableFlights";
+import loadingGif from '../assets/Loading.gif';
 
 function BookingForm() {
   const [startLocation, setStartLocation] = useState("");
@@ -18,6 +18,7 @@ function BookingForm() {
 
   const [searched, setSearched] = useState(false);
   const [availableFlights, setAvailableFlights] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleStartLocationChange = (event) => {
     setStartLocation(event.target.value);
@@ -81,8 +82,14 @@ function BookingForm() {
       infants,
       selectedClass,
     };
-
+  
     try {
+      
+      setLoading(true); // Set loading to true when submitting the form
+
+
+
+
       const response = await fetch("https://successonfly-backend-1.onrender.com/api/check-flights", {
         method: "POST",
         headers: {
@@ -90,7 +97,7 @@ function BookingForm() {
         },
         body: JSON.stringify(travelDetails),
       });
-
+  
       if (response.ok) {
         const result = await response.json();
         setAvailableFlights(result.availableFlights);
@@ -100,6 +107,8 @@ function BookingForm() {
       }
     } catch (error) {
       console.error("Error:", error);
+    }finally {
+      setLoading(false); // Set loading back to false regardless of success or error
     }
   };
 
@@ -279,16 +288,18 @@ function BookingForm() {
           </div>
         </div>
 
+        
         <div className="row mt-4">
           <div className="col d-flex justify-content-center">
-            <Button variant="primary" type="submit" className="bg-info fs-5">
-              Search
+            {/* Button with loading icon */}
+            <Button variant="primary" type="submit" className="bg-info fs-5" disabled={loading}>
+              {loading ? <img src={loadingGif} alt="Loading" className="loading-icon" /> : "Search"}
             </Button>
           </div>
         </div>
-      </form>
 
-      {/* Display available flights */}
+
+         {/* Display available flights */}
       {searched && availableFlights.length > 0 && (
         <AvailableFlights availableFlights={availableFlights} />
       )}
@@ -297,6 +308,10 @@ function BookingForm() {
       {searched && availableFlights.length === 0 && (
         <p>No Flights available for the selected criteria.</p>
       )}
+      </form>
+
+      
+      
     </div>
   );
 }

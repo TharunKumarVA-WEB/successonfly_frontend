@@ -1,7 +1,9 @@
 
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import loadingGif from '../assets/Loading.gif'; // Import your loading gif
 
 function SignIn({ setLoggedIn, setUserEmail }) {
   const [loginFormData, setLoginFormData] = useState({
@@ -21,12 +23,26 @@ function SignIn({ setLoggedIn, setUserEmail }) {
       console.log('Logging in user...');
 
       // Simulating login, replace this with actual login logic
-      const userEmail = loginFormData.username; // Assume username is the email
-      setLoggedIn(true);
-      setUserEmail(userEmail);
-      navigate('/');
+      // For localhost with port 3000
+      const response = await fetch('https://successonfly-backend-1.onrender.com/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(loginFormData)
+      });
 
-      console.log('Login successful.');
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log('Login successful.');
+        setLoggedIn(true);
+        setUserEmail(loginFormData.username);
+        navigate('/');
+      } else {
+        console.log('Error logging in:', data.error || 'Unknown error');
+        setErrorMessage(data.error || 'An error occurred during login.');
+      }
     } catch (error) {
       console.error('Unexpected error during login:', error);
       setErrorMessage('An unexpected error occurred. Please try again.');
@@ -67,6 +83,14 @@ function SignIn({ setLoggedIn, setUserEmail }) {
           <button type="submit" className="btn btn-primary" disabled={loading}>
             {loading ? 'Logging in...' : 'Login'}
           </button>
+          {/* Loading gif */}
+          {loading && (
+            <div className="d-flex justify-content-center align-items-center mt-3">
+              <img src={loadingGif} alt="Loading" className="loading-gif" />
+            </div>
+          )}
+          {/* Add Link to Signup page */}
+          <p className="mt-3">Don't have an account? <Link to="/signup">Signup</Link></p>
         </form>
         {errorMessage && <p className="text-danger mt-3">{errorMessage}</p>}
       </div>
@@ -74,6 +98,10 @@ function SignIn({ setLoggedIn, setUserEmail }) {
   );
 }
 
-export default SignIn;
+SignIn.propTypes = {
+  setLoggedIn: PropTypes.func.isRequired,
+  setUserEmail: PropTypes.func.isRequired
+};
 
+export default SignIn;
 
