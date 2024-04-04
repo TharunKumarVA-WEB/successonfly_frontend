@@ -1,5 +1,6 @@
 
 
+
 import React, { useState, useEffect } from "react";
 import { Card, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -32,6 +33,8 @@ function DefaultFlights() {
   };
 
   const handleBookNow = (flight) => {
+
+    window.scrollTo(0, 0);
     // Navigate to the booking page with selected flight details
     navigate("/booking", { state: { flight: flight } }); // Pass the flight data in state
   };
@@ -45,8 +48,8 @@ function DefaultFlights() {
   }
 
   return (
-    <div className="container mt-4">
-      <h2 className="mb-4">Available Flights</h2>
+    <div className="container mt-2">
+      <h2 className="mb-4">Default Flights</h2>
       <div className="row row-cols-1 row-cols-md-2 g-4">
         {availableFlights.length > 0 ? (
           availableFlights.map((flight) => (

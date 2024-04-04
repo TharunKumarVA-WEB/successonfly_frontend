@@ -1,4 +1,5 @@
 
+
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -15,7 +16,7 @@ function BookingPage() {
     // This is just an example, you can replace it with your actual logic
     alert(`Booking confirmed for ${numAdults} adults, ${numChildren} children in ${selectedClass} class.`);
     // Redirect the user to the previous page after confirming the booking
-    navigate(-1); // Navigate back one step
+    navigate('/'); // Navigate back one step
   };
 
   return (
@@ -50,3 +51,4 @@ function BookingPage() {
 }
 
 export default BookingPage;
+
