@@ -60,9 +60,9 @@ function DefaultFlights() {
                   <Card.Text>
                     <strong>Flight Number:</strong> {flight.flight_number}
                     <br />
-                    <strong>Departure:</strong> {flight.departure.location} - {flight.departure.date_time}
+                    <strong>Departure:</strong> {flight.departure.location} - {flight.departure.time}
                     <br />
-                    <strong>Arrival:</strong> {flight.arrival.location} - {flight.arrival.date_time}
+                    <strong>Arrival:</strong> {flight.arrival.location} - {flight.arrival.time}
                     <br />
                     <strong>Business Class Seats:</strong> {flight.class_availability.Business.remaining_seats}
                     <br />
