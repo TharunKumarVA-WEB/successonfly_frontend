@@ -1,8 +1,7 @@
 
 
-
 import React, { useState, useEffect } from "react";
-import { Card, Button } from "react-bootstrap";
+import { Card, Button, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import loadingGif from "../assets/Loading.gif";
 
@@ -33,7 +32,6 @@ function DefaultFlights() {
   };
 
   const handleBookNow = (flight) => {
-
     window.scrollTo(0, 0);
     // Navigate to the booking page with selected flight details
     navigate("/booking", { state: { flight: flight } }); // Pass the flight data in state
@@ -48,39 +46,47 @@ function DefaultFlights() {
   }
 
   return (
-    <div className="container mt-2">
-      <h2 className="mb-4">Default Flights</h2>
-      <div className="row row-cols-1 row-cols-md-2 g-4">
-        {availableFlights.length > 0 ? (
-          availableFlights.map((flight) => (
-            <div key={flight._id} className="col">
-              <Card>
-                <Card.Body>
-                  <Card.Title>{flight.airline}</Card.Title>
-                  <Card.Text>
-                    <strong>Flight Number:</strong> {flight.flight_number}
-                    <br />
-                    <strong>Departure:</strong> {flight.departure.location} - {flight.departure.time}
-                    <br />
-                    <strong>Arrival:</strong> {flight.arrival.location} - {flight.arrival.time}
-                    <br />
-                    <strong>Business Class Seats:</strong> {flight.class_availability.Business.remaining_seats}
-                    <br />
-                    <strong>Economy Class Seats:</strong> {flight.class_availability.Economy.remaining_seats}
-                  </Card.Text>
-                  <Button variant="primary" onClick={() => handleBookNow(flight)}>Book Now</Button>
-                </Card.Body>
-              </Card>
-            </div>
-          ))
-        ) : (
-          <div className="col">
-            <div className="alert alert-warning" role="alert">
-              No available flights
-            </div>
-          </div>
-        )}
-      </div>
+    <div className="container mt-4">
+    <h2 className="mb-4">Default Flights</h2>
+      {availableFlights.map((flight) => (
+        <div key={flight._id} className="mb-4">
+          <Card>
+            <Card.Body>
+              <Card.Title>{flight.airline}</Card.Title>
+              <strong>Flight Number:</strong> {flight.flight_number}
+              <div className="d-flex justify-content-between mt-2">
+                <div className='row'>
+                  <p className="card-text">Departure: {flight.departure.time}</p>
+                  <p className="card-text">From: {flight.departure.location}</p>
+                </div>
+                <div className='row'>
+                  <p className="card-text">Arrival: {flight.arrival.time}</p>
+                  <p className="card-text">To: {flight.arrival.location}</p>
+                </div>
+              </div>
+              <Table striped bordered hover responsive className="mt-3">
+                <thead>
+                  <tr>
+                    <th>Class</th>
+                    <th>Remaining Seats</th>
+                    <th>Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(flight.class_availability).map(([className, details]) => (
+                    <tr key={className}>
+                      <td>{className}</td>
+                      <td>{details.remaining_seats}</td>
+                      <td>{details.price}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+              <Button variant="primary" onClick={() => handleBookNow(flight)}>Book Now</Button>
+            </Card.Body>
+          </Card>
+        </div>
+      ))}
     </div>
   );
 }

@@ -1,3 +1,5 @@
+
+
 // import React, { useState, useEffect } from 'react';
 // import loadingGif from '../assets/Loading.gif';
 
@@ -10,7 +12,7 @@
 //     const fetchOrders = async () => {
 //       setIsLoading(true);
 //       try {
-//         const response = await fetch(`https://successonfly-backend-1.onrender.com/api/get-user-orders?email=${userEmail}`);
+//         const response = await fetch(`http://localhost:3000/api/get-user-orders?userEmail=${userEmail}`);
 //         if (response.ok) {
 //           const data = await response.json();
 //           setOrders(data.orders);
@@ -42,17 +44,24 @@
 //   return (
 //     <div>
 //       <h2>Your Orders</h2>
+
 //       {orders.length === 0 ? (
 //         <p>No orders found.</p>
 //       ) : (
 //         <ul>
-//           {orders.map((order, index) => (
-//             <li key={index}>
-//               <p>Flight: {order.airline}</p>
-//               <p>Departure: {order.departure.date_time}</p>
-//               <p>Class: {order.classSelection}</p>
-//             </li>
-//           ))}
+//           {orders.map((order, index) => {
+//             return (
+//               <li key={index}>
+//                 {order && order.flight ? (
+//                   <>
+//                     <p>Flight: {order.flight.airline}</p>
+//                     <p>Departure: {order.flight.departure.date_time}</p>
+//                     <p>Class: {order.classSelection}</p>
+//                   </>
+//                 ) : null}
+//               </li>
+//             );
+//           })}
 //         </ul>
 //       )}
 //     </div>
@@ -62,6 +71,8 @@
 // export default ViewOrders;
 
 
+
+// ViewOrders.js
 
 import React, { useState, useEffect } from 'react';
 import loadingGif from '../assets/Loading.gif';
@@ -75,7 +86,7 @@ function ViewOrders({ userEmail }) {
     const fetchOrders = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`https://successonfly-backend-1.onrender.com/api/get-user-orders?email=${userEmail}`);
+        const response = await fetch(`http://localhost:3000/api/get-user-orders?userEmail=${userEmail}`);
         if (response.ok) {
           const data = await response.json();
           setOrders(data.orders);
@@ -107,65 +118,26 @@ function ViewOrders({ userEmail }) {
   return (
     <div>
       <h2>Your Orders</h2>
-      {/* {orders.length === 0 ? (
+
+      {orders.length === 0 ? (
         <p>No orders found.</p>
       ) : (
         <ul>
-          {orders.map((order, index) => (
-            <li key={index}>
-              <p>Flight: {order.airline}</p>
-              <p>Departure: {order.departure.date_time}</p>
-              <p>Class: {order.classSelection}</p>
-            </li>
-          ))}
+          {orders.map((order, index) => {
+            return (
+              <li key={index}>
+                {order && order.flight ? (
+                  <>
+                    <p>Flight: {order.flight.airline}</p>
+                    <p>Departure: {order.flight.departure.date_time}</p>
+                    <p>Class: {order.classSelection}</p>
+                  </>
+                ) : null}
+              </li>
+            );
+          })}
         </ul>
-      )} */}
-
-
-{/* 
-      {orders.length === 0 ? (
-  <p>No orders found.</p>
-) : (
-  <ul>
-    {orders.map((order, index) => (
-      <li key={index}>
-        {order.flight ? (
-          <>
-            <p>Flight: {order.flight.airline}</p>
-            <p>Departure: {order.flight.departure.date_time}</p>
-            <p>Class: {order.classSelection}</p>
-          </>
-        ) : null}
-      </li>
-    ))}
-  </ul>
-)} */}
-
-
-{console.log('Orders:', orders)}
-{orders.length === 0 ? (
-  <p>No orders found.</p>
-) : (
-  <ul>
-    {orders.map((order, index) => {
-      console.log('Order:', order);
-      return (
-        <li key={index}>
-          {order && order.flight ? (
-            <>
-              <p>Flight: {order.flight.airline}</p>
-              <p>Departure: {order.flight.departure.date_time}</p>
-              <p>Class: {order.classSelection}</p>
-            </>
-          ) : null}
-        </li>
-      );
-    })}
-  </ul>
-)}
-
-
-
+      )}
     </div>
   );
 }
