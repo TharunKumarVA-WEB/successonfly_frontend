@@ -19,7 +19,7 @@ function BookingPage() {
 
   const handleConfirmBooking = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/book-flight', {
+      const response = await fetch('https://successonfly-backend-1.onrender.com/api/book-flight', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
