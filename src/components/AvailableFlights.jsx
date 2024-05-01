@@ -1,25 +1,23 @@
 
 
-
-// AvailableFlights.js
-
 import React, { useState } from 'react';
-import { Button, Card, Table } from 'react-bootstrap';
+import { Card, Button, Table } from 'react-bootstrap';
 import loadingGif from '../assets/Loading.gif';
 
-function AvailableFlights({ availableFlights, startDate, endDate, userEmail }) {
-  const [bookingMessage, setBookingMessage] = useState('');
+function AvailableFlights({ availableFlights, isLoggedIn, userEmail, startDate }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-GB');
-  };
+  const [bookingMessage, setBookingMessage] = useState('');
 
   const handleBookFlight = async (flight, className) => {
     setIsLoading(true);
     setError(null);
+
+    if (!isLoggedIn) {
+      setError('Please login to book a flight.');
+      setIsLoading(false);
+      return;
+    }
 
     try {
       const response = await fetch('https://successonfly-backend-1.onrender.com/api/book-flight', {
@@ -27,7 +25,14 @@ function AvailableFlights({ availableFlights, startDate, endDate, userEmail }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ flight, classSelection: className, userEmail }),
+        body: JSON.stringify({
+          flight,
+          classSelection: className,
+          numAdults: 1,
+          numChildren: 0,
+          departureDate: startDate,
+          userEmail: userEmail, // Pass userEmail to the backend
+        }),
       });
 
       if (response.ok) {
@@ -100,4 +105,3 @@ function AvailableFlights({ availableFlights, startDate, endDate, userEmail }) {
 }
 
 export default AvailableFlights;
-

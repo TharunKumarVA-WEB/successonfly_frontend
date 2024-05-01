@@ -5,7 +5,9 @@ import React from 'react';
 import { useSearchContext } from './SearchContext';
 import AvailableFlights from './AvailableFlights';
 
-function SearchResults({ startDate, endDate }) {
+
+
+function SearchResults({ startDate, endDate,loggedIn }) {
 
 
   
@@ -18,7 +20,7 @@ function SearchResults({ startDate, endDate }) {
   return (
     <div>
       <h1>Search Results</h1>
-      <AvailableFlights availableFlights={searchResults} startDate={startDate} endDate={endDate} />
+      <AvailableFlights availableFlights={searchResults} startDate={startDate} endDate={endDate} isLoggedIn={loggedIn} />
     </div>
   );
 }
